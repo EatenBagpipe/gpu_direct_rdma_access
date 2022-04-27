@@ -349,7 +349,7 @@ static int rdma_set_lid_gid_from_port_info(struct rdma_device *rdma_dev)
 
     if (rdma_dev->cm_id && portinfo.link_layer == IBV_LINK_LAYER_ETHERNET) {
         rdma_dev->gidx = ibv_find_sgid_type(rdma_dev->context, rdma_dev->ib_port, 
-                IBV_GID_TYPE_ROCE_V2, rdma_dev->cm_id->route.addr.src_addr.sa_family);
+                IBV_GID_TYPE_ROCE_V2_, rdma_dev->cm_id->route.addr.src_addr.sa_family);
     }
     
     if (rdma_dev->gidx < 0) {

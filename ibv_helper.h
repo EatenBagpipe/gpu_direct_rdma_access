@@ -36,9 +36,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-enum ibv_gid_type {
+enum ibv_gid_type_local {
         IBV_GID_TYPE_IB_ROCE_V1,
-        IBV_GID_TYPE_ROCE_V2,
+        IBV_GID_TYPE_ROCE_V2_,
 };
 
 static int ibv_read_sysfs_file(const char *dir, const char *file,
@@ -86,7 +86,7 @@ static int ibv_read_sysfs_file(const char *dir, const char *file,
 #define V1_TYPE "IB/RoCE v1"
 #define V2_TYPE "RoCE v2"
 static int ibv_query_gid_type(struct ibv_context *context, uint8_t port_num,
-                unsigned int index, enum ibv_gid_type *type)
+                unsigned int index, enum ibv_gid_type_local *type)
 {
         char name[32];
         char buff[11];
@@ -134,7 +134,7 @@ static int ibv_query_gid_type(struct ibv_context *context, uint8_t port_num,
                 if (!strcmp(buff, V1_TYPE)) {
                         *type = IBV_GID_TYPE_IB_ROCE_V1;
                 } else if (!strcmp(buff, V2_TYPE)) {
-                        *type = IBV_GID_TYPE_ROCE_V2;
+                        *type = IBV_GID_TYPE_ROCE_V2_;
                 } else {
                         errno = ENOTSUP;
                         return -1;
@@ -145,9 +145,9 @@ static int ibv_query_gid_type(struct ibv_context *context, uint8_t port_num,
 }
 
 int ibv_find_sgid_type(struct ibv_context *context, uint8_t port_num,
-		enum ibv_gid_type gid_type, int gid_family)
+		enum ibv_gid_type_local gid_type, int gid_family)
 {
-        enum ibv_gid_type sgid_type = 0;
+        enum ibv_gid_type_local sgid_type = 0;
         union ibv_gid sgid;
         int sgid_family = -1;
         int idx = 0;

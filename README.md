@@ -85,6 +85,6 @@ $ ./map_pci_nic_gpu.sh
 
 Run client application with matching IP address and BDF from the script output (-a and -u parameters)
 ```sh
-$ ./client -t 0 -a 172.172.1.112 172.172.1.34 -u b7:00.0 -n 10000 -D 0 -s 10000000 -p 18001 &
+$ ./client -t 1 -a 172.172.1.112 172.172.1.34 -u b7:00.0 -n 10000 -D 0 -s 10000000 -p 18001 &
 <output>
 ```
