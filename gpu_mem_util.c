@@ -51,6 +51,7 @@
 #ifdef HAVE_CUDA
 /* "/usr/local/cuda/include/" is added to build include path in the Makefile */
 #include "cuda.h"
+#include "cuda_runtime_api.h"
 #endif //HAVE_CUDA
 
 #include "gpu_mem_util.h"
@@ -67,7 +68,7 @@ extern int debug_fast_path;
 #define ASSERT(x)   \
     do {            \
         if (!(x)) { \
-            fprintf(stdout, "Assertion \"%s\" failed at %s:%d\n", #x, __FILE__, __LINE__);\
+            fprintf(stdout, "Assertion \"%s\" failed at %s:%d\n", #x, __FILE__, __LINE__);exit(1);\
         }           \
     } while (0)
 
@@ -76,7 +77,11 @@ extern int debug_fast_path;
         CUresult result = (stmt);       \
         ASSERT(CUDA_SUCCESS == result); \
     } while (0)
-
+#define CUDACHECK(stmt)                   \
+    do {                                \
+        cudaError_t result = (stmt);       \
+        ASSERT(cudaSuccess == result); \
+    } while (0)
 /*----------------------------------------------------------------------------*/
 
 static CUcontext cuContext;
@@ -276,3 +281,12 @@ void work_buffer_free(void *buff, int use_cuda)
 
 /*----------------------------------------------------------------------------*/
 
+void memcpyd2h(void* dst, void* src, size_t len) {
+    CUDACHECK(cudaMemcpy(dst, src, len, cudaMemcpyDeviceToHost));
+    CUDACHECK(cudaThreadSynchronize());
+}
+
+void memcpyh2d(void* dst, void* src, size_t len) {
+    CUDACHECK(cudaMemcpy(dst, src, len, cudaMemcpyHostToDevice));
+    CUDACHECK(cudaThreadSynchronize());
+}

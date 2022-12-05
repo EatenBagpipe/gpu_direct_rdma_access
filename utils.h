@@ -49,7 +49,7 @@ int get_addr(char *dst, struct sockaddr *addr);
  *
  * returns: 0 on success or 1 on error
  */
-int print_run_time(struct timeval start, unsigned long size, int iters);
+float print_run_time(struct timeval start, unsigned long size, int iters);
 
 
 #ifdef __cplusplus

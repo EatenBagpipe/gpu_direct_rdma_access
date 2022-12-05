@@ -49,6 +49,9 @@ void *work_buffer_alloc(size_t length, int use_cuda, const char *bdf);
  */
 void work_buffer_free(void *buff, int use_cuda);
 
+void memcpyd2h(void* dst, void* src, size_t len);
+void memcpyh2d(void* dst, void* src, size_t len);
+
 
 #ifdef __cplusplus
 }

@@ -63,7 +63,7 @@ int get_addr(char *dst, struct sockaddr *addr)
         return ret;
 }
 
-int print_run_time(struct timeval start, unsigned long size, int iters)
+float print_run_time(struct timeval start, unsigned long size, int iters)
 {
     struct timeval  end;
     float           usec;
@@ -73,15 +73,16 @@ int print_run_time(struct timeval start, unsigned long size, int iters)
         perror("gettimeofday");
         return 1;
     }
+    printf("%d.%d %d.%d\n", start.tv_sec, start.tv_usec, end.tv_sec, end.tv_usec);
 
     usec  = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
     bytes = (long long) size * iters;
 
-    printf("%lld bytes in %.2f seconds = %.2f Mbit/sec\n",
-           bytes, usec / 1000000., bytes * 8. / usec);
+    printf("%lld bytes in %.2f seconds = %.2f GByte/sec = %.2f Gbps\n",
+           bytes, usec / 1000000., bytes * 1. / usec / 1024, bytes * 1. / usec / 1000 * 8);
     printf("%d iters in %.2f seconds = %.2f usec/iter\n",
            iters, usec / 1000000., usec / iters);
-    return 0;
+    return usec;
 
 }
 

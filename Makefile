@@ -6,10 +6,14 @@ ifeq ($(USE_CUDA),1)
   CUDAFLAGS = -I/usr/local/cuda-10.1/targets/x86_64-linux/include
   CUDAFLAGS += -I/usr/local/cuda/include
   PRE_CFLAGS1 = -I$(IDIR) $(CUDAFLAGS) -g -DHAVE_CUDA
-  LIBS = -Wall -lrdmacm -libverbs -lmlx5 -lcuda
+  LIBS = -Wall -lrdmacm -libverbs -lmlx5 -lcuda -L/usr/local/cuda-11.6/targets/x86_64-linux/lib/ -lcudart
 else
   PRE_CFLAGS1 = -I$(IDIR) -g
   LIBS = -Wall -lrdmacm -libverbs -lmlx5
+endif
+
+ifeq ($(USE_SOCKET),1)
+  PRE_CFLAGS1 += -DUSE_SOCKET
 endif
 
 ifeq ($(PRINT_LAT),1)
